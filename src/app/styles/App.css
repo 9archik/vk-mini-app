@@ -1,0 +1,4 @@
+.vkuiCardGrid--sizeX-none {
+    padding-left: var(--vkui--size_base_padding_horizontal--regular);
+    padding-right: var(--vkui--size_base_padding_horizontal--regular);
+}
