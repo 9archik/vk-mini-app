@@ -1,7 +1,7 @@
 import { Div } from '@vkontakte/vkui';
 import { FC } from 'react';
-import Rating from '../../rating/rating';
-import styles from './styles.module.scss';
+import Rating from '../rating/rating';
+import styles from './styles.module.css';
 
 interface ICaptionCardProp {
 	rating: number;

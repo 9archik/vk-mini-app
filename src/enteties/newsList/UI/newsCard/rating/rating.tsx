@@ -1,7 +1,8 @@
 import { FC } from 'react';
-import LikeSVG from '../../../Icons/LikeSVG';
+import LikeSVG from '../../../../../shared/Icons/LikeSVG';
+
 import { Div } from '@vkontakte/vkui';
-import styles from "./styles.module.scss"
+import styles from './styles.module.css';
 
 interface IRating {
 	rating: number;
@@ -25,8 +26,8 @@ const Rating: FC<IRating> = ({ rating }) => {
 	return (
 		<div className={styles.container}>
 			<LikeSVG
-                width={15}
-                height={15}
+				width={15}
+				height={15}
 				style={rating < 0 ? { transform: 'rotate(180deg)' } : undefined}
 				fill={changeColor(rating)}
 			/>

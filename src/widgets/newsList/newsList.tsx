@@ -1,61 +1,75 @@
-import { Card, CardGrid, Group, Separator, Spacing } from '@vkontakte/vkui';
-import LoadingCard from '../../shared/UI/newsList/loadingCard/loadingCard';
-import NewsCard from '../../shared/UI/newsList/newsCard/newsCard';
+import { Card, CardGrid, Group, Separator, Spacing, Div, Button, Title } from '@vkontakte/vkui';
+import NewsCard from '../../enteties/newsList/UI/newsCard/newsCard';
+import styles from './styles.module.css';
+import FullFilledList from './UI/fullfilled/fullfilledList';
+import { useEffect, useState } from 'react';
+import { getLatestNews } from './Api/GetNews';
+import { useAppSelector } from '../../app/hooks/reduxTypes';
+import { useAppDispatch } from '../../app/hooks/reduxTypes';
+import { setLoading, setNews, setError } from '../../features/newsList/slices/slices';
+import { RootState } from '../../app/store';
+import PendingList from './UI/pending/pendingList';
+import { isArrayOfTypeNews } from './utils/checkTypes';
+import { useInterval } from '../../shared/hooks/useInterval';
 
 const NewsList = () => {
+	const loading = useAppSelector((state) => state.news.loading);
+	const error = useAppSelector((state) => state.news.error);
+	const array = useAppSelector((state) => state.news.array);
+	const [firstUpdate, setFirstUpdate] = useState(false);
+	const dispatch = useAppDispatch();
+
+	const setNewsListFirst = () => {
+		getLatestNews()
+			.then((res) => {
+				if (res) {
+					dispatch(setNews(res));
+					dispatch(setLoading(false));
+					setFirstUpdate(true);
+				}
+			})
+			.catch(() => {
+				dispatch(setNews(null));
+				dispatch(setError(true));
+				dispatch(setLoading(false));
+				setFirstUpdate(true);
+			});
+	};
+
+	useEffect(() => {
+		setNewsListFirst();
+	}, []);
+
+	useInterval(
+		() => {
+			getLatestNews()
+				.then((res) => {
+					if (res) {
+						dispatch(setNews(res));
+						dispatch(setLoading(false));
+						dispatch(setError(false));
+					}
+				})
+				.catch(() => {});
+		},
+		firstUpdate ? 60000 : null,
+	);
 	return (
-		<>
-			<CardGrid size="l">
-				<Spacing size={10}>
-					<Separator />
-				</Spacing>
+		<Div>
+			<Button
+				onClick={() => {
+					setFirstUpdate(false);
+					dispatch(setLoading(true));
+					setNewsListFirst();
+				}}
+				style={{ width: '100%' }}>
+				<Title level="3"> Обновить список</Title>
+			</Button>
 
-				<NewsCard
-					rating={5}
-					img={{
-						src: 'https://images.unsplash.com/photo-1603988492906-4fb0fb251cf8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80',
-						alt: '',
-					}}
-					date={'date'}
-					header={'header'}
-					author="alex"
-				/>
-
-				<Spacing size={10}>
-					<Separator />
-				</Spacing>
-
-				<NewsCard
-					rating={0}
-					img={{
-						src: 'https://images.unsplash.com/photo-1603988492906-4fb0fb251cf8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80',
-						alt: '',
-					}}
-					date={'date'}
-					header={'header'}
-					author="alex"
-				/>
-
-				<Spacing size={10}>
-					<Separator />
-				</Spacing>
-
-				<NewsCard
-					rating={-1}
-					img={{
-						src: 'https://images.unsplash.com/photo-1603988492906-4fb0fb251cf8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80',
-						alt: '',
-					}}
-					date={'date'}
-					header={'header'}
-					author="alex"
-				/>
-
-				<Spacing size={20}>
-					<Separator />
-				</Spacing>
-			</CardGrid>
-		</>
+			<div className={styles.container}>
+				{!loading ? <FullFilledList array={array} /> : <PendingList />}
+			</div>
+		</Div>
 	);
 };
 
