@@ -12,5 +12,5 @@ export interface INews {
 }
 
 export interface IFullfilledNewsList {
-	array: any;
+	array: INews[] | null;
 }

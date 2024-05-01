@@ -1,23 +1,31 @@
-import { Div, Headline, Link, Title } from '@vkontakte/vkui';
+import { Div, Headline, Link, Title, Text } from '@vkontakte/vkui';
 import { formatSecondsToDate } from '../../../shared/functions/timeToDate';
+import NewsInfoItem from './UI/newsInfoItem/newsInfoItem';
+import NewsInfoLink from './UI/newsInfoLink/newsInfoLink';
+import { useAppSelector } from '../../../app/hooks/reduxTypes';
 
-const NewsItem = () => {
-	return (
-		<Div>
-			<Link target="__blank">Ссылка на новость</Link>
-			<Headline>
-				Название: <Title level="1">Название</Title>
-			</Headline>
+const NewsInfo = () => {
+	const info = useAppSelector((state) => state.activeNews.info);
 
-			<Headline>
-				Дата: <Title level="2">{formatSecondsToDate(39219329)}</Title>
-			</Headline>
+	if (info !== null) {
+		return (
+			<>
+				<NewsInfoLink href={info.url} />
 
-			<Headline>
-				Автор: <Title level="3">автор</Title>
-			</Headline>
-		</Div>
-	);
+				<NewsInfoItem textWeight="1" name="Название" value={info.title} />
+
+				<NewsInfoItem
+					textWeight="2"
+					name="Дата публикации"
+					value={formatSecondsToDate(info.time)}
+				/>
+
+				<NewsInfoItem textWeight="3" name="Автор" value={info.author} />
+			</>
+		);
+	}
+
+	return <></>;
 };
 
-export default NewsItem;
+export default NewsInfo;

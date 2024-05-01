@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import './styles/App.css';
 import { useActiveVkuiLocation, useGetPanelForView } from '@vkontakte/vk-mini-apps-router';
@@ -9,10 +9,12 @@ import '@vkontakte/vkui/dist/vkui.css';
 import NewsList from '../pages/NewsList/NewsList';
 import { Provider } from 'react-redux';
 import NewsPage from '../pages/NewsPage/NewsPage';
+import NotFoundPage from '../pages/404Page/404';
 
 function App() {
 	const { view: activeView } = useActiveVkuiLocation();
 	const activePanel = useGetPanelForView('default_view');
+	const routeNavigator = useRouteNavigator();
 
 	return (
 		<Root activeView={`${activeView}`}>
@@ -22,6 +24,9 @@ function App() {
 				</Panel>
 				<Panel nav="news_item_panel">
 					<NewsPage />
+				</Panel>
+				<Panel nav="404_panel">
+					<NotFoundPage />
 				</Panel>
 			</View>
 		</Root>

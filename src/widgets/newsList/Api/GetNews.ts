@@ -2,7 +2,7 @@ import { INews } from '../Model/interfaces';
 
 async function getTopStories(): Promise<number[]> {
 	try {
-		const response = await fetch('https://hacker-news.firebaseio.com/v0/newstories.json');
+		const response = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json');
 		const data = await response.json();
 		return data.slice(0, 100); // Получаем первые 100 новейших новостей
 	} catch {
