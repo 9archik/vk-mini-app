@@ -7,20 +7,26 @@ import { useAppSelector } from '../../../app/hooks/reduxTypes';
 const NewsInfo = () => {
 	const info = useAppSelector((state) => state.activeNews.info);
 
+	console.log('info', info);
+
 	if (info !== null) {
 		return (
 			<>
-				<NewsInfoLink href={info.url} />
+				{info.url && <NewsInfoLink href={info.url} />}
 
-				<NewsInfoItem textWeight="1" name="Название" value={info.title} />
+				<NewsInfoItem
+					textWeight="1"
+					name="Название"
+					value={info.title ? info.title : 'Неизвестно'}
+				/>
 
 				<NewsInfoItem
 					textWeight="2"
 					name="Дата публикации"
-					value={formatSecondsToDate(info.time)}
+					value={info.time !== undefined ? formatSecondsToDate(info.time) : 'Неизвестно'}
 				/>
 
-				<NewsInfoItem textWeight="3" name="Автор" value={info.author} />
+				<NewsInfoItem textWeight="3" name="Автор" value={info.by ? info.by : 'Неизвестен'} />
 			</>
 		);
 	}

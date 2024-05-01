@@ -8,3 +8,7 @@ export interface INewsLinkItemUI {
 	href: string;
 	text?: string;
 }
+
+export interface INewsInfoText {
+	text: string;
+}

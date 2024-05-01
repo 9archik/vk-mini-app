@@ -2,6 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "devDependencies": {
     "@types/dompurify": "^3.0.5",
     "@vkontakte/vk-miniapps-deploy": "^0.1.6",
@@ -36,7 +37,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "tunnel": "vk-tunnel --http-protocol=http --host=localhost --port=3000",
-    "deploy": "vite build && vk-miniapps-deploy"
+    "deploy": "vk-miniapps-deploy"
   },
   "eslintConfig": {
     "extends": [

@@ -5,5 +5,8 @@ export interface IComment {
 }
 
 export interface ICounterComments {
-	counter: number;
+	counter: string;
+	loading: boolean;
+	onClickUpdate: () => void;
+	updating: boolean;
 }

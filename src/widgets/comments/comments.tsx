@@ -11,8 +11,11 @@ import {
 	ICommentListState,
 } from './Model/interface';
 import { useAppDispatch, useAppSelector } from '../../app/hooks/reduxTypes';
-import { setComments } from '../../features/comments/slices/slices';
 import CommentBlock from './UI/comment/comment';
+import {
+	setCommentsCounterLoading,
+	setCommentsCounterValue,
+} from '../../features/newsItem/slices/slices';
 
 const getNewComment = (
 	comment: ICommentListItemAPI,
@@ -37,7 +40,12 @@ const Comments = () => {
 	const routeNavigator = useRouteNavigator();
 	const dispatch = useAppDispatch();
 
-	const [commentsCounter, setCommentsCounter] = useState<null | number>(null);
+	const commentsCounter = useAppSelector((state) => state.activeNews.commentsCounter.value);
+	const commentsCounterLoading = useAppSelector(
+		(state) => state.activeNews.commentsCounter.loading,
+	);
+
+	const [commentsUpdating, setCommentsUpdating] = useState(false);
 
 	const [comments, setComments] = useState<ICommentListState>([]);
 
@@ -73,19 +81,40 @@ const Comments = () => {
 		})
 		.map(commentMapper);
 
-	console.log(
-		Object.values(comments)
-			.filter((comment) => {
-				return !comment.parentNodeId;
-			})
-			.map(commentMapper),
-	);
+	const loadingComments = () => {
+		if (params?.id && !isNaN(Number(params?.id))) {
+			getComments(Number(params.id))
+				.then((res: ICommentListItemAPI[] | undefined) => {
+					if (res) {
+						for (let i = 0; i < res.length; i++) {
+							let el: ICommentItem = {
+								...res[i],
+								parentNodeId: null,
+								childComments: [],
+								isRootNode: true,
+							};
 
-	useEffect(() => {
+							addComment(null, el);
+						}
+					}
+
+					setCommentsUpdating(false);
+				})
+				.catch(() => {
+					setCommentsUpdating(false);
+					dispatch(setCommentsCounterLoading(false));
+				});
+		} else {
+			routeNavigator.push('*');
+		}
+	};
+
+	const updateComments = () => {
 		if (params?.id && !isNaN(Number(params?.id))) {
 			getCommentCount(Number(params.id))
 				.then((res: number) => {
-					setCommentsCounter(res);
+					dispatch(setCommentsCounterValue(res));
+					dispatch(setCommentsCounterLoading(false));
 				})
 				.catch(() => {});
 			getComments(Number(params.id))
@@ -102,21 +131,42 @@ const Comments = () => {
 							addComment(null, el);
 						}
 					}
+
+					setCommentsUpdating(false);
 				})
-				.catch(() => {});
+				.catch(() => {
+					setCommentsUpdating(false);
+					dispatch(setCommentsCounterLoading(false));
+				});
 		} else {
 			routeNavigator.push('*');
 		}
+	};
+
+	useEffect(() => {
+		setComments([]);
+		loadingComments()
 	}, []);
+
+	const onClickUpdate = () => {
+		setCommentsUpdating(true);
+		setComments([]);
+		updateComments();
+	};
 
 	return (
 		<>
-			<CommentsCounter counter={commentsCounter ? commentsCounter : 0} />
+			<CommentsCounter
+				loading={commentsCounterLoading}
+				counter={commentsCounter !== null ? String(commentsCounter) : 'кол-во неизвестно'}
+				onClickUpdate={onClickUpdate}
+				updating={commentsUpdating}
+			/>
 
 			{enhancedComments.map((comment, key) => {
 				let commentItem = comment as ICommentItem;
 
-				return <CommentBlock comment={commentItem} addComment={addComment} />;
+				return <CommentBlock key={key} comment={commentItem} addComment={addComment} />;
 			})}
 		</>
 	);

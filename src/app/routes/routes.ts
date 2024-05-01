@@ -20,6 +20,13 @@ const routes: RouteWithRoot[] = [
 		view: 'default_view',
 		root: 'default_root',
 	},
+
+	{
+		path: `notFound`,
+		panel: '404_panel',
+		view: 'default_view',
+		root: 'default_root',
+	},
 	// Другие маршруты...
 ];
 

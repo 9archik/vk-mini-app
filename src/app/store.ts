@@ -1,12 +1,10 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import newsReducer from '../features/newsList/slices/slices';
 import newsItemReducer from '../features/newsItem/slices/slices';
-import commentsReducer from '../features/comments/slices/slices';
 
 const reducer = combineReducers({
 	news: newsReducer,
 	activeNews: newsItemReducer,
-	comments: commentsReducer,
 });
 
 export const store = configureStore({

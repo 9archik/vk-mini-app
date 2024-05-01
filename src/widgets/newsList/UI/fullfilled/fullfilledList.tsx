@@ -23,7 +23,7 @@ const FullFilledList: FC<IFullfilledNewsList> = ({ array }) => {
 										time: el?.time,
 										title: el?.title,
 										url: el?.url,
-										author: el?.by,
+										by: el?.by,
 									}),
 								);
 							}}

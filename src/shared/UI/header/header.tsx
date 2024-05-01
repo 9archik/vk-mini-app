@@ -5,22 +5,13 @@ import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';
 import { useActiveVkuiLocation } from '@vkontakte/vk-mini-apps-router';
 import { IHeaderProp } from './model/interfaces';
 import { FC } from 'react';
-const Header: FC<IHeaderProp> = ({ beforeClick }) => {
+const Header: FC<IHeaderProp> = ({ beforeEl }) => {
 	return (
 		<>
 			<PanelHeader
 				style={{ color: 'white' }}
 				shadow={true}
-				before={
-					<PanelHeaderClose
-						style={{ transform: 'translateY(2px)' }}
-						onClick={() => {
-							if (typeof beforeClick === 'function') {
-								beforeClick();
-							}
-						}}
-					/>
-				}
+				before={beforeEl}
 				after={<Avatar size={36} />}>
 				News
 			</PanelHeader>
