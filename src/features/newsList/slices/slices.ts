@@ -6,7 +6,7 @@ import { INews } from '../../../widgets/newsList/Model/interfaces';
 
 const initialState: INewsSlice = {
 	loading: true,
-	error: false,
+	error: null,
 	array: null,
 };
 
@@ -21,7 +21,7 @@ export const newsSlice = createSlice({
 		setLoading: (state, action: PayloadAction<boolean>) => {
 			state.loading = action.payload;
 		},
-		setError: (state, action: PayloadAction<boolean>) => {
+		setError: (state, action: PayloadAction<string | null>) => {
 			state.error = action.payload;
 		},
 	},

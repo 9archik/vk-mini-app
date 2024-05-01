@@ -1,11 +1,26 @@
+import { error } from 'console';
 import { INews } from '../Model/interfaces';
 
 async function getTopStories(): Promise<number[]> {
 	try {
-		const response = await fetch('https://hacker-news.firebaseio.com/v0/newstories.json');
-		const data = await response.json();
-		return data.slice(0, 100); // Получаем первые 100 новейших новостей
+		const response = await fetch('https://hacker-news.firebaseio.com/v0/newstories.json')
+			.then()
+			.catch();
+		if (response.ok) {
+			const data = await response.json();
+			return data.slice(0, 100); // Получаем первые 100 новейших новостей
+		} else {
+			const error = new Error();
+
+			if (response.status >= 500) {
+				error.name = 'server_error';
+			}
+			throw error;
+		}
 	} catch {
+		const error = new Error();
+		error.name = 'err_connection';
+		throw error;
 		return [];
 	}
 }
@@ -23,6 +38,7 @@ export async function getLatestNews() {
 		const newsDetails = await fetchNewsDetails(storyIds);
 		return newsDetails;
 	} catch (error) {
-		console.error('Error fetching news:', error);
+		const err = error as Error;
+		throw err;
 	}
 }

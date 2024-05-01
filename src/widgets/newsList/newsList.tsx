@@ -11,6 +11,7 @@ import { RootState } from '../../app/store';
 import PendingList from './UI/pending/pendingList';
 import { isArrayOfTypeNews } from './utils/checkTypes';
 import { useInterval } from '../../shared/hooks/useInterval';
+import LoadedList from './loadedList/loadedList';
 
 const NewsList = () => {
 	const loading = useAppSelector((state) => state.news.loading);
@@ -25,12 +26,14 @@ const NewsList = () => {
 				if (res) {
 					dispatch(setNews(res));
 					dispatch(setLoading(false));
+					dispatch(setError(null));
 					setFirstUpdate(true);
 				}
 			})
-			.catch(() => {
+			.catch((err: Error) => {
+				console.log('error', err.name);
 				dispatch(setNews(null));
-				dispatch(setError(true));
+				dispatch(setError(err.name));
 				dispatch(setLoading(false));
 				setFirstUpdate(true);
 			});
@@ -40,6 +43,8 @@ const NewsList = () => {
 		setNewsListFirst();
 	}, []);
 
+	console.log('state', error);
+
 	useInterval(
 		() => {
 			getLatestNews()
@@ -47,7 +52,7 @@ const NewsList = () => {
 					if (res) {
 						dispatch(setNews(res));
 						dispatch(setLoading(false));
-						dispatch(setError(false));
+						dispatch(setError(null));
 					}
 				})
 				.catch(() => {});
@@ -55,7 +60,7 @@ const NewsList = () => {
 		firstUpdate ? 60000 : null,
 	);
 	return (
-		<Div>
+		<Div className={styles.mainBlock}>
 			<Button
 				onClick={() => {
 					setFirstUpdate(false);
@@ -66,9 +71,7 @@ const NewsList = () => {
 				<Title level="3"> Обновить список</Title>
 			</Button>
 
-			<div className={styles.container}>
-				{!loading ? <FullFilledList array={array} /> : <PendingList />}
-			</div>
+			<div className={styles.container}>{!loading ? <LoadedList /> : <PendingList />}</div>
 		</Div>
 	);
 };

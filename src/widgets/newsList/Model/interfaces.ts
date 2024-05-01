@@ -14,3 +14,7 @@ export interface INews {
 export interface IFullfilledNewsList {
 	array: INews[] | null;
 }
+
+export interface IErrorProps {
+	error: string;
+}
