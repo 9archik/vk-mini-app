@@ -1,4 +1,4 @@
-import LoadingCard from '../../../../enteties/newsList/UI/loadingCard/loadingCard';
+import LoadingCard from '../../../../entities/newsList/UI/loadingCard/loadingCard';
 
 const PendingList = () => {
 	return (

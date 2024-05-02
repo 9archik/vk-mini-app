@@ -1,5 +1,5 @@
 import { Card, CardGrid, Group, Separator, Spacing, Div, Button, Title } from '@vkontakte/vkui';
-import NewsCard from '../../enteties/newsList/UI/newsCard/newsCard';
+import NewsCard from '../../entities/newsList/UI/newsCard/newsCard';
 import styles from './styles.module.css';
 import FullFilledList from './UI/fullfilled/fullfilledList';
 import { useEffect, useState } from 'react';

@@ -1,4 +1,4 @@
-import { IComment } from '../../../enteties/comments/Model/interfaces';
+import { IComment } from '../../../entities/comments/Model/interfaces';
 
 export interface ICommentListItemAPI {
 	by?: string;

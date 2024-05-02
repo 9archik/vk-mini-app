@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import CommentsCounter from '../../enteties/comments/UI/Counter/Counter';
+import CommentsCounter from '../../entities/comments/UI/Counter/Counter';
 import { useParams } from '@vkontakte/vk-mini-apps-router';
 import { getCommentCount } from './Api/getCommentCount';
 import { useRouteNavigator } from '@vkontakte/vk-mini-apps-router';

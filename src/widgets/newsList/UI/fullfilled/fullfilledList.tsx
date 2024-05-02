@@ -1,4 +1,4 @@
-import NewsCard from '../../../../enteties/newsList/UI/newsCard/newsCard';
+import NewsCard from '../../../../entities/newsList/UI/newsCard/newsCard';
 import { FC } from 'react';
 import { IFullfilledNewsList, INews } from '../../Model/interfaces';
 import { formatSecondsToDate } from '../../../../shared/functions/timeToDate';
