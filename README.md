@@ -1,9 +1,9 @@
 # Новостной портал в VK MINI APPS
 
 # Приложение 
-*[Ссылка на VK MINI APP](https://vk.com/app51913610)
-*[Ссылка на хостинг React приложения](https://prod-app51913610-6e07fffff161.pages-ac.vk-apps.com/index.html)
-*id: 51913610
+* [Ссылка на VK MINI APP](https://vk.com/app51913610)
+* [Ссылка на хостинг React приложения](https://prod-app51913610-6e07fffff161.pages-ac.vk-apps.com/index.html)
+* id: 51913610
 
 # Инструкция по запуску
 1. Склонировать репозиторий при помощи команды *git clone https://github.com/9archik/vk-mini-app*
