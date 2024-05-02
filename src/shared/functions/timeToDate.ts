@@ -19,8 +19,20 @@ function secondsToDate(seconds: number) {
 	return date;
 }
 
+function formatNumberTime(num: number) {
+	if (num < 10) {
+		return `0${num}`;
+	}
+
+	return num;
+}
+
 export function formatSecondsToDate(seconds: number): string {
 	let date = secondsToDate(seconds);
 
-	return `${date.getDate()} ${monthsGenitive[date.getMonth()]} ${date.getFullYear()}`;
+	let hour = formatNumberTime(date.getHours());
+
+	let minutes = formatNumberTime(date.getMinutes())
+
+	return `${date.getDate()} ${monthsGenitive[date.getMonth()]} ${date.getFullYear()} ${hour}:${minutes}`;
 }

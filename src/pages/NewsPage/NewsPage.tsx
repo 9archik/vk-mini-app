@@ -19,18 +19,21 @@ const NewsPage = () => {
 	const routeNavigator = useRouteNavigator();
 	const dispatch = useAppDispatch();
 	const info = useAppSelector((state) => state.activeNews.info);
+	const [loadingInfo, setLoadingInfo] = useState(false);
 	const [errorInfo, setErrorInfo] = useState<null | string>(null);
 
 	const updateArticleData = () => {
 		if (params?.id && !isNaN(Number(params?.id))) {
 			dispatch(setCommentsCounterLoading(true));
-			setErrorInfo(null);
+			setLoadingInfo(true);
+		
 			getArticleData(Number(params.id))
 				.then((res) => {
 					if (!res || !res?.type || res?.type === 'comment') {
 						routeNavigator.replace('notFound');
 					} else {
 						dispatch(setActiveItem(res));
+						setLoadingInfo(false);
 						setErrorInfo(null);
 						if (res?.descendants !== undefined) {
 							dispatch(setCommentsCounterValue(res.descendants));
@@ -43,6 +46,7 @@ const NewsPage = () => {
 					dispatch(setCommentsCounterValue(null));
 					dispatch(setCommentsCounterLoading(false));
 					dispatch(setCommentsCounterError(true));
+					setLoadingInfo(false);
 
 					if (!info) {
 						setErrorInfo(err.name);
@@ -68,7 +72,7 @@ const NewsPage = () => {
 		return (
 			<>
 				<HeaderNewsItem />
-				<Error error={errorInfo} />;
+				<Error loadingUpdate={loadingInfo} updateData={updateArticleData} error={errorInfo} />;
 			</>
 		);
 	}
