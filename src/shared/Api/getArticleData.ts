@@ -7,10 +7,21 @@ export async function getArticleData(articleId: number) {
 		if (response.ok) {
 			const articleData: IActiveNewsItem = await response.json();
 
-			return articleData;
+			const data: IActiveNewsItem = {
+				id: articleData.id,
+				url: articleData.url,
+				title: articleData.title,
+				time: articleData.time,
+				by: articleData.by,
+				text: articleData?.text,
+				descendants: articleData.descendants,
+				type: articleData.type,
+			};
+
+			return data;
 		} else {
 			if (response.status >= 500) {
-				const err = new Error();
+				const err = new Error('server_error');
 
 				err.name = 'server_error';
 
@@ -18,11 +29,20 @@ export async function getArticleData(articleId: number) {
 			}
 		}
 	} catch (error) {
-		const err = new Error();
+		const err = error as Error;
 
-		err.name = 'err_connection';
+		
+
+		if (err.message === 'Failed to fetch' || err.message.includes('NetworkError')) {
+			console.log('article error', err.message);
+
+			err.name = 'err_connection';
+			err.message = 'err_connection';
+
+			throw err;
+		}
 
 		throw err;
-		return null; // Возвращаем 0 в случае ошибки
+		return;
 	}
 }
