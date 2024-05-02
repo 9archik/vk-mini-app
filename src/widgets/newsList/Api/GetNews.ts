@@ -36,7 +36,8 @@ export async function getLatestNews() {
 	try {
 		const storyIds = await getTopStories();
 		const newsDetails = await fetchNewsDetails(storyIds);
-		return newsDetails;
+		const newsDetailsSort = newsDetails.sort((a, b) => b.time - a.time);
+		return newsDetailsSort;
 	} catch (error) {
 		const err = error as Error;
 		throw err;

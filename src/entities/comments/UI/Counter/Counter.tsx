@@ -16,7 +16,7 @@ const CommentsCounter: FC<ICounterComments> = ({ counter, loading, onClickUpdate
 			<Div className={styles.container}>
 				<Title size={2}>Комментарии {counter}</Title>
 
-				<Button loading={updating} onClick={onClickUpdate}>
+				<Button disabled={updating} loading={updating} onClick={onClickUpdate}>
 					<Text weight={'1'}>Обновить комментарии</Text>
 				</Button>
 			</Div>

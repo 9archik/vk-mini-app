@@ -9,6 +9,7 @@ import { setActiveItem } from '../../../../features/newsItem/slices/slices';
 const FullFilledList: FC<IFullfilledNewsList> = ({ array }) => {
 	const routeNavigator = useRouteNavigator();
 	const dispatch = useAppDispatch();
+
 	return (
 		<>
 			{array &&

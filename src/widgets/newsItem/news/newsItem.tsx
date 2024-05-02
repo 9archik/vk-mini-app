@@ -7,7 +7,7 @@ import { useAppSelector } from '../../../app/hooks/reduxTypes';
 const NewsInfo = () => {
 	const info = useAppSelector((state) => state.activeNews.info);
 
-	console.log('info', info);
+	
 
 	if (info !== null) {
 		return (

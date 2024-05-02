@@ -35,6 +35,7 @@ const CommentBlock: FC<ICommentBlock> = ({ comment, addComment }) => {
 					<Button
 						style={{ margin: '10px 0 0 0' }}
 						loading={loadingChild}
+						disabled={loadingChild}
 						onClick={() => {
 							if (typeof addComment === 'function') {
 								setLoadingChild(true);
@@ -81,7 +82,8 @@ const CommentBlock: FC<ICommentBlock> = ({ comment, addComment }) => {
 				showChild &&
 				childComments.map((el) => {
 					if (typeof el !== 'number') {
-						return <CommentBlock comment={el} addComment={addComment} />;
+						let elem = el as ICommentItem;
+						return <CommentBlock key={elem.id} comment={elem} addComment={addComment} />;
 					}
 				})}
 		</Div>

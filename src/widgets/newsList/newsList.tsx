@@ -21,6 +21,8 @@ const NewsList = () => {
 	const dispatch = useAppDispatch();
 
 	const setNewsListFirst = () => {
+		dispatch(setLoading(true));
+		dispatch(setError(null));
 		getLatestNews()
 			.then((res) => {
 				if (res) {
@@ -31,7 +33,6 @@ const NewsList = () => {
 				}
 			})
 			.catch((err: Error) => {
-				console.log('error', err.name);
 				dispatch(setNews(null));
 				dispatch(setError(err.name));
 				dispatch(setLoading(false));
@@ -43,7 +44,11 @@ const NewsList = () => {
 		setNewsListFirst();
 	}, []);
 
-	console.log('state', error);
+	useEffect(() => {
+		window.addEventListener('online', setNewsListFirst);
+
+		return () => window.removeEventListener('online', setNewsListFirst);
+	}, []);
 
 	useInterval(
 		() => {
@@ -62,6 +67,8 @@ const NewsList = () => {
 	return (
 		<Div className={styles.mainBlock}>
 			<Button
+				disabled={loading}
+				loading={loading}
 				onClick={() => {
 					setFirstUpdate(false);
 					dispatch(setLoading(true));

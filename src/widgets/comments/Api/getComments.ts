@@ -10,7 +10,7 @@ export async function getComments(articleId: number) {
 		if (response.ok) {
 			const articleData = await response.json();
 
-			console.log('article', articleData);
+			
 
 			if (articleData.kids) {
 				await Promise.all(

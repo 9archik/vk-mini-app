@@ -1,5 +1,5 @@
 import { Button } from '@vkontakte/vkui';
-import Header from '../../../shared/UI/header/header';
+import Header from '../../../entities/header/header';
 import { PanelHeaderClose } from '@vkontakte/vkui';
 import bridge from '@vkontakte/vk-bridge';
 import { useEffect, useState } from 'react';
@@ -19,8 +19,7 @@ const HeaderMain = () => {
 				}
 			})
 			.catch((error) => {
-				setShowClose(true);
-				console.log(error);
+				setShowClose(false);
 			});
 	}, []);
 	return (
@@ -41,10 +40,7 @@ const HeaderMain = () => {
 										// Событие отправлено
 									}
 								})
-								.catch((error) => {
-									// Ошибка
-									console.log(error);
-								});
+								.catch((error) => {});
 						}}
 					/>
 				) : (
