@@ -31,11 +31,7 @@ export async function getArticleData(articleId: number) {
 	} catch (error) {
 		const err = error as Error;
 
-		
-
 		if (err.message === 'Failed to fetch' || err.message.includes('NetworkError')) {
-			console.log('article error', err.message);
-
 			err.name = 'err_connection';
 			err.message = 'err_connection';
 

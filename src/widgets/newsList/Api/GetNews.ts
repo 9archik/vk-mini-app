@@ -17,11 +17,17 @@ async function getTopStories(): Promise<number[]> {
 			}
 			throw error;
 		}
-	} catch {
-		const error = new Error();
-		error.name = 'err_connection';
-		throw error;
-		return [];
+	} catch (error) {
+		const err = error as Error;
+
+		if (err.message === 'Failed to fetch' || err.message.includes('NetworkError')) {
+			err.name = 'err_connection';
+			err.message = 'err_connection';
+
+			throw err;
+		}
+
+		throw err;
 	}
 }
 

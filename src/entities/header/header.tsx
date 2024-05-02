@@ -18,9 +18,7 @@ const Header: FC<IHeaderProp> = ({ beforeEl }) => {
 					setAvatar('');
 				}
 			})
-			.catch((error) => {
-				console.log(error);
-			});
+			.catch((error) => {});
 	}, []);
 	return (
 		<>
