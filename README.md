@@ -2,7 +2,7 @@
 
 # Приложение 
 * [Ссылка на VK MINI APP](https://vk.com/app51913610)
-* [Ссылка на хостинг React приложения](https://prod-app51913610-6e07fffff161.pages-ac.vk-apps.com/index.html)
+* [Ссылка на хостинг React приложения](https://prod-app51913610-e7adb44d7538.pages-ac.vk-apps.com/index.html)
 * id: 51913610
 
 # Инструкция по запуску
