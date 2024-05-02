@@ -16,6 +16,7 @@ import {
 	setCommentsCounterLoading,
 	setCommentsCounterValue,
 } from '../../features/newsItem/slices/slices';
+import CommentList from './Blocks/CommentList/commentList';
 
 const getNewComment = (
 	comment: ICommentListItemAPI,
@@ -46,7 +47,7 @@ const Comments = () => {
 	);
 
 	const [commentsUpdating, setCommentsUpdating] = useState(false);
-
+	const [commentsError, setCommentsError] = useState<null | string>(null);
 	const [comments, setComments] = useState<ICommentListState>([]);
 
 	const addComment = (parentId: number | null, newComment: ICommentItem) => {
@@ -81,29 +82,34 @@ const Comments = () => {
 		})
 		.map(commentMapper);
 
+	const setCommentsState = (id: number) => {
+		getComments(Number(id))
+			.then((res: ICommentListItemAPI[] | undefined) => {
+				if (res) {
+					for (let i = 0; i < res.length; i++) {
+						let el: ICommentItem = {
+							...res[i],
+							parentNodeId: null,
+							childComments: [],
+							isRootNode: true,
+						};
+
+						addComment(null, el);
+					}
+				}
+				setCommentsError(null);
+				setCommentsUpdating(false);
+			})
+			.catch((err: Error) => {
+				setCommentsUpdating(false);
+				setCommentsError(err.name);
+				dispatch(setCommentsCounterLoading(false));
+			});
+	};
+
 	const loadingComments = () => {
 		if (params?.id && !isNaN(Number(params?.id))) {
-			getComments(Number(params.id))
-				.then((res: ICommentListItemAPI[] | undefined) => {
-					if (res) {
-						for (let i = 0; i < res.length; i++) {
-							let el: ICommentItem = {
-								...res[i],
-								parentNodeId: null,
-								childComments: [],
-								isRootNode: true,
-							};
-
-							addComment(null, el);
-						}
-					}
-
-					setCommentsUpdating(false);
-				})
-				.catch(() => {
-					setCommentsUpdating(false);
-					dispatch(setCommentsCounterLoading(false));
-				});
+			setCommentsState(Number(params.id));
 		} else {
 			routeNavigator.push('*');
 		}
@@ -117,35 +123,17 @@ const Comments = () => {
 					dispatch(setCommentsCounterLoading(false));
 				})
 				.catch(() => {});
-			getComments(Number(params.id))
-				.then((res: ICommentListItemAPI[] | undefined) => {
-					if (res) {
-						for (let i = 0; i < res.length; i++) {
-							let el: ICommentItem = {
-								...res[i],
-								parentNodeId: null,
-								childComments: [],
-								isRootNode: true,
-							};
 
-							addComment(null, el);
-						}
-					}
-
-					setCommentsUpdating(false);
-				})
-				.catch(() => {
-					setCommentsUpdating(false);
-					dispatch(setCommentsCounterLoading(false));
-				});
+			setCommentsState(Number(params.id));
 		} else {
 			routeNavigator.push('*');
 		}
 	};
 
 	useEffect(() => {
+		setCommentsUpdating(true);
 		setComments([]);
-		loadingComments()
+		loadingComments();
 	}, []);
 
 	const onClickUpdate = () => {
@@ -163,11 +151,13 @@ const Comments = () => {
 				updating={commentsUpdating}
 			/>
 
-			{enhancedComments.map((comment, key) => {
-				let commentItem = comment as ICommentItem;
-
-				return <CommentBlock key={key} comment={commentItem} addComment={addComment} />;
-			})}
+			{!commentsUpdating && (
+				<CommentList
+					error={commentsError}
+					enhancedComments={enhancedComments}
+					addComment={addComment}
+				/>
+			)}
 		</>
 	);
 };

@@ -33,7 +33,7 @@ const NewsPage = () => {
 						}
 					}
 				})
-				.catch(() => {
+				.catch((err) => {
 					dispatch(setCommentsCounterValue(null));
 					dispatch(setCommentsCounterLoading(false));
 					dispatch(setCommentsCounterError(true));

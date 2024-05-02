@@ -7,7 +7,11 @@ export async function getArticleData(articleId: number) {
 
 		return articleData;
 	} catch (error) {
-		console.error('Ошибка:', error);
+		const err = new Error();
+
+		err.name = 'server_error';
+
+		throw err;
 		return null; // Возвращаем 0 в случае ошибки
 	}
 }

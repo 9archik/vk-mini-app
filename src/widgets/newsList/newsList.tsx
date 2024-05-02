@@ -71,7 +71,9 @@ const NewsList = () => {
 				<Title level="3"> Обновить список</Title>
 			</Button>
 
-			<div className={styles.container}>{!loading ? <LoadedList /> : <PendingList />}</div>
+			<div className={`${styles.container} ${error && styles.error}`}>
+				{!loading ? <LoadedList /> : <PendingList />}
+			</div>
 		</Div>
 	);
 };

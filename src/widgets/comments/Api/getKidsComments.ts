@@ -3,7 +3,6 @@ import { ICommentListItemAPI } from '../Model/interface';
 export async function getCommentsByIds(commentIds: number[]) {
 	const comments: ICommentListItemAPI[] = [];
 
-	// Параллельное выполнение запросов
 	await Promise.all(
 		commentIds.map(async (commentId) => {
 			try {
